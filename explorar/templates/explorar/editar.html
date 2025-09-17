@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'explorar/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+
+<body>
+    <div class="titulo-centralizado">
+        <h1>Editar Notas</h1>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Enviar">
+    </form>
+   
+    <button id="toggle">Alternar Tema</button>
+    <script src="script.js"></script>
+    <!-- No final do <body> -->
+<script src="{% static 'explorar/script.js' %}"></script>
+</body>
+
+</html>

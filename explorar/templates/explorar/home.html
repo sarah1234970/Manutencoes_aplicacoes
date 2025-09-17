@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <link rel="stylesheet" href="{% static 'explorar/style.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{}">
+
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="titulo-centralizado">
+    <h1>Bem Vindo(a) {{ nome }} a tela Inicial!</h1>
+  </div>
+
+  <table border="2">
+    <thead>
+      <th>Título</th>
+      <th>Descrição</th>
+      <th>Categoria</th>
+      <th>Completo</th>
+      <th>Data de criação</th>
+      <th>Imagem</th>
+    </thead>
+    <tbody>
+      {% for explorar in adicionados %}
+      <tr>
+        <td>{{explorar.titulo}}</td>
+        <td>{{ explorar.descricao }}</td>
+        <td>{{explorar.categoria}}</td>
+        <td>{% if explorar.completo%}Completo{% else %}Incompleto{% endif %}</td>
+        <td>{{explorar.data_criacao}}</td>
+        {% if item.imagem %} {# <-- VERIFICA SE A IMAGEM EXISTE #} <img src="{{ explorar.imagem.url }}"
+          alt="{{ explorar.titulo }}" width="600"> {# <-- EXIBE A IMAGEM #} {% else %} Nenhuma imagem {% endif %} <td><a
+              href="{% url 'explorar:editar' explorar.id %}">Editar</a></td>
+            <td><a href="{% url 'explorar:remover' explorar.id %}">Remover</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="titulo-centralizado">
+    <a href="{% url 'explorar:adicionar' %}">Adicionar Nova Nota + </a>
+  </div>
+
+  <img src="{% static 'img/livro23.jpg' %}" alt="livro">
+
+  <button id="toggle">Alternar Tema</button>
+  <script src="script.js"></script>
+  <!-- No final do <body> -->
+  <script src="{% static 'explorar/script.js' %}"></script>
+</body>
+
+</html>
