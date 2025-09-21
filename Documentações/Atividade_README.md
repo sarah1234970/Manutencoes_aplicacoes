@@ -38,7 +38,7 @@
 #
 
 - Python
-<img align="center" height="30" width="40" src="images/python.png">
+<img align="center" height="30" width="40" src="python.png">
 
 #
 
@@ -53,19 +53,19 @@
 ### Principais Frameworks para o desenvolvimento Web
 
 - React Native;
-<img align="center" alt="Spring" height="30" width="40" src="Spring.logo.webp">
+<img align="center" alt="Spring" height="30" width="40" src="react native.png">
 
 #
 - React;
-<img align="center" alt="Rafa-Js" height="45" width="55" src="spring.webp">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="react.webp">
 
 #
 - EXPRESS JS;
-<img align="center" alt="Rafa-Js" height="45" width="55" src="spring.webp">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="EXPRESS JS.2.png">
 
 #
 - VUE JS
-<img align="center" alt="Rafa-Js" height="45" width="55" src="spring.webp">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="Vue JS Logo.jpg">
 
 #
 - DJANGO
