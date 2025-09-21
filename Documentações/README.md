@@ -36,7 +36,7 @@ Outras alternativas:
 
 Fluxo da comunicação para resolução do problema
 
-![My First Board.jpg](Documentações/image.jpg)
+![My First Board.jpg](image.jpg)
 
 **Descrição do fluxograma:**
 
