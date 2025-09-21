@@ -23,17 +23,17 @@
 #
 
 - PHP;
-<img align="center" alt="Rafa-CSS" height="30" width="40" src="images/php.png">
+<img align="center" alt="Rafa-CSS" height="30" width="40" src="php.png">
 
 #
 
 - ASP.NET;
-<img align="center" alt="Rafa-CSS" height="60" width="65" src="images/apnet.png">
+<img align="center" alt="Rafa-CSS" height="60" width="65" src="apnet.png">
 
 #
 
 - Ruby on Rails;
-<img align="center" alt="Rafa-CSS" height="45" width="50" src="images/jewelry.png">
+<img align="center" alt="Rafa-CSS" height="45" width="50" src="jewelry.png">
 
 #
 
@@ -43,29 +43,29 @@
 #
 
 - SQL;
-<img align="center" alt="Img sql" height="45" width="55" src="images/database.png">
+<img align="center" alt="Img sql" height="45" width="55" src="database.png">
 
 #
 
 - Node.js;
-<img align="center" alt="Rafa-CSS" height="45" width="55" src="images/nodejs.png">
+<img align="center" alt="Rafa-CSS" height="45" width="55" src="nodejs.png">
 
 ### Principais Frameworks para o desenvolvimento Web
 
 - React Native;
-<img align="center" alt="Spring" height="30" width="40" src="images/Spring.logo.webp>
+<img align="center" alt="Spring" height="30" width="40" src="Spring.logo.webp">
 
 #
 - React;
-<img align="center" alt="Rafa-Js" height="45" width="55" src="images/spring.webp">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="spring.webp">
 
 #
 - EXPRESS JS;
-<img align="center" alt="Rafa-Js" height="45" width="55" src="images/spring.webp">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="spring.webp">
 
 #
 - VUE JS
-<img align="center" alt="Rafa-Js" height="45" width="55" src="images/spring.webp">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="spring.webp">
 
 #
 - DJANGO
@@ -73,16 +73,16 @@
 
 #
 - ANGULAR
-<img align="center" alt="Rafa-Js" height="30" width="" src="images/angular.png">
+<img align="center" alt="Rafa-Js" height="30" width="" src="angular.png">
 
 #
 - Laravel
-<img align="center" alt="Rafa-Js" height="45" width="55" src="images/Laravel.jpg">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="Laravel.jpg">
 
 
 #
 - Spring
-<img align="center" alt="Rafa-Js" height="45" width="55" src="images/spring.webp">
+<img align="center" alt="Rafa-Js" height="45" width="55" src="spring.webp">
 
 
 ### Ferramentas utilizadas: 
