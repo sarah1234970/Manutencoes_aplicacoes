@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<script src="atividade_5.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Cadastro</title>
+    <style>
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 32px;
+            color: #333;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #666;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 0;
+            border: none;
+            border-bottom: 1px solid #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: transparent;
+            transition: border-color 0.2s ease;
+        }
+        i {
+            position: relative;
+            left: 290px;
+            bottom: 35px;
+            color: #333333;
+            font-size: 18px;
+            pointer-events: none;
+            cursor: pointer;
+            transform: translateY(50%);
+            transition: color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        input::placeholder {
+            color: #999;
+            font-weight: 300;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 0;
+            top: 35px;
+            color: #999;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .actions {
+            margin-top: 40px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 0;
+            border: 1px solid #e0e0e0;
+            background: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
+
+        .btn-primary:hover {
+            background: #555;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;
+
+            border-color: #ccc;
+            color: #333;
+        }    </style>
+    <script>
+        function validarFormulario() {
+            let nome = document.getElementById("nome").value;
+            let email = document.getElementById("email").value;
+            let senha = document.getElementById("senha").value;
+            let telefone = document.getElementById("telefone").value;
+            let idade = document.getElementById("idade").value;
+            if (nome.trim() === "" || email.trim() === "" || telefone.trim() === "" || idade.trim() === "" || senha.trim() === "") {
+                alert("Por favor, preencha todos os campos!");
+                return false;
+            }
+            return true;
+        }
+        function limparFormulario() {
+            document.getElementById("formCadastro").reset();
+        }
+        function enviarFormulario() {
+            if (validarFormulario()) {
+                alert("Usuário cadastrado com sucesso!📩");
+                limparFormulario();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="card">
+        <h2>Cadastro</h2>
+        <form id="formCadastro" onsubmit="return validarFormulario()">
+            <label for="nome">Nome</label>
+            <input placeholder="Seu Nome" type="text" id="nome" name="nome">
+            <i class="bx bx-user"></i>
+
+            <label for="email">E-mail</label>
+            <input placeholder="Seu E-mail" type="email" id="email" name="email">
+            <i class="bx bx-envelope-open"></i>
+
+            <label for="senha">Senha</label>
+            <input placeholder="Sua Senha" type="password" id="senha" name="senha">
+            <i class="bx bx-lock"></i>
+
+            <label for="telefone">Telefone</label>
+            <input placeholder="Seu número de Telefone" type="tel" id="telefone" name="telefone">
+            <i class="bx bx-phone"></i>
+
+            <label for="idade">Idade</label>
+            <input placeholder="Sua Idade" type="number" id="idade" name="idade">
+            <i class="bx bx-calendar"></i>
+            <div class="actions">
+                <input type="button" value="Cadastrar" onclick="enviarFormulario()">
+                <button type="button" value="Limpar" onclick="limparFormulario()"> Limpar </button>
+            </div></i></button>
+
+        </form>
+    </div>
+</body>
+
+</html>
