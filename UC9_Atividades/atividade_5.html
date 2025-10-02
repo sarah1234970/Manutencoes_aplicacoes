@@ -2,7 +2,6 @@
 <html lang="pt-br">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-<script src="atividade_5.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -121,6 +120,7 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
             text-align: center;
+            transition: all 0.2s ease;
         }
 
         .actions button {
@@ -169,7 +169,6 @@
 
         .btn-secondary:hover {
             background: #f5f5f5;
-
             border-color: #ccccccf1;
             color: #525151;
         }
@@ -181,54 +180,84 @@
             let senha = document.getElementById("senha").value;
             let telefone = document.getElementById("telefone").value;
             let idade = document.getElementById("idade").value;
+
+            // 1. Verifica se algum campo está vazio
             if (nome.trim() === "" || email.trim() === "" || telefone.trim() === "" || idade.trim() === "" || senha.trim() === "") {
                 alert("Por favor, preencha todos os campos!");
                 return false;
             }
+
+            // 2. Verifica o formato do e-mail
+            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!regexEmail.test(email)) {
+                alert("Por favor, insira um formato de e-mail válido (ex: nome@dominio.com).");
+                return false;
+            }
+
+            // Se todas as validações passaram, retorna true
             return true;
         }
+
         function limparFormulario() {
             document.getElementById("formCadastro").reset();
         }
-        function enviarFormulario() {
+
+        function enviarFormulario(event) {
+            // Previne o comportamento padrão do formulário (recarregar a página)
+            event.preventDefault();
+
             if (validarFormulario()) {
-                alert("Usuário cadastrado com sucesso!📩");
+                alert("Usuário cadastrado com sucesso!📩🌟");
                 limparFormulario();
             }
         }
+
+        // Adiciona o event listener quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('formCadastro').addEventListener('submit', enviarFormulario);
+        });
     </script>
 </head>
 
 <body>
     <div class="card">
         <h2>Cadastro</h2>
-        <form id="formCadastro" onsubmit="return validarFormulario()">
-            <label for="nome">Nome</label>
-            <input placeholder="Seu Nome" type="text" id="nome" name="nome"  maxlength="50">
-            <i class="bx bx-user"></i>
+        <form id="formCadastro">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input placeholder="Seu Nome" type="text" id="nome" name="nome" maxlength="50">
+                <i class="bx bx-user"></i>
+            </div>
 
-            <label for="email">E-mail</label>
-            <input placeholder="Seu E-mail" type="email" id="email" name="email">
-            <i class="bx bx-envelope-open"></i>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input placeholder="Seu E-mail" type="email" id="email" name="email">
+                <i class="bx bx-envelope-open"></i>
+            </div>
 
-            <label for="senha">Senha</label>
-            <input placeholder="Sua Senha" type="password" id="senha" name="senha" maxlength="20">
-            <i class="bx bx-lock"></i>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input placeholder="Sua Senha" type="password" id="senha" name="senha" maxlength="20">
+                <i class="bx bx-lock"></i>
+            </div>
 
-            <label for="telefone">Telefone</label>
-            <input placeholder="Seu número de Telefone" type="tel" id="telefone" name="telefone" maxlength="15">
-            <i class="bx bx-phone"></i>
+            <div class="form-group">
+                <label for="telefone">Telefone</label>
+                <input placeholder="Seu número de Telefone" type="tel" id="telefone" name="telefone" maxlength="15">
+                <i class="bx bx-phone"></i>
+            </div>
 
-            <label for="idade">Idade</label>
-            <input placeholder="Sua Idade" type="number" id="idade" name="idade">
-            <i class="bx bx-calendar"></i>
+            <div class="form-group">
+                <label for="idade">Idade</label>
+                <input placeholder="Sua Idade" type="number" id="idade" name="idade">
+                <i class="bx bx-calendar"></i>
+            </div>
+
             <div class="actions">
-                <input type="button" value="Cadastrar" onclick="enviarFormulario()">
-                <button type="button" value="Limpar" onclick="limparFormulario()"> Limpar </button>
-            </div></i></button>
-
+                <input type="submit" value="Cadastrar">
+                <button type="button" onclick="limparFormulario()">Limpar</button>
+            </div>
         </form>
     </div>
 </body>
-
 </html>
