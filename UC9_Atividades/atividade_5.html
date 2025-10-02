@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title>Formulário de Cadastro</title>
     <style>
-* {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -63,6 +63,7 @@
             background: transparent;
             transition: border-color 0.2s ease;
         }
+
         i {
             position: relative;
             left: 290px;
@@ -104,6 +105,46 @@
             gap: 12px;
         }
 
+        .actions input {
+            flex: 1;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #5da8b6;
+            font-weight: 500;
+            color: white;
+            padding: 12px 0;
+            border-radius: 4px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .actions button {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 12px 0;
+            border-radius: 4px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #333;
+            flex: 0.9;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .actions input:hover,
+        .actions button:hover {
+            opacity: 0.9;
+        }
+
         .btn {
             padding: 12px 0;
             border: 1px solid #e0e0e0;
@@ -129,9 +170,10 @@
         .btn-secondary:hover {
             background: #f5f5f5;
 
-            border-color: #ccc;
-            color: #333;
-        }    </style>
+            border-color: #ccccccf1;
+            color: #525151;
+        }
+    </style>
     <script>
         function validarFormulario() {
             let nome = document.getElementById("nome").value;
@@ -162,7 +204,7 @@
         <h2>Cadastro</h2>
         <form id="formCadastro" onsubmit="return validarFormulario()">
             <label for="nome">Nome</label>
-            <input placeholder="Seu Nome" type="text" id="nome" name="nome">
+            <input placeholder="Seu Nome" type="text" id="nome" name="nome"  maxlength="50">
             <i class="bx bx-user"></i>
 
             <label for="email">E-mail</label>
@@ -170,11 +212,11 @@
             <i class="bx bx-envelope-open"></i>
 
             <label for="senha">Senha</label>
-            <input placeholder="Sua Senha" type="password" id="senha" name="senha">
+            <input placeholder="Sua Senha" type="password" id="senha" name="senha" maxlength="20">
             <i class="bx bx-lock"></i>
 
             <label for="telefone">Telefone</label>
-            <input placeholder="Seu número de Telefone" type="tel" id="telefone" name="telefone">
+            <input placeholder="Seu número de Telefone" type="tel" id="telefone" name="telefone" maxlength="15">
             <i class="bx bx-phone"></i>
 
             <label for="idade">Idade</label>
