@@ -6,14 +6,33 @@
     <title>Lista de Tarefas</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #fff;
+            font-family: poppins, sans-serif;
+            background-image: url('https://i.pinimg.com/736x/54/43/e2/5443e29eff44bbe56dc6699997ff1df2.jpg');
+            margin: 20px;
+            border: 1px solid #6c6a6a; /* Adicionando uma borda ao redor do corpo */
+            border-radius: 8px; /* Bordas arredondadas */
+            max-width: 600px; /* Largura máxima para melhor visualização */
+            background: #fffffff3;
             text-align: center;
+            background-blend-mode: multiply;
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidade */
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 90vh; /* Altura da viewport */
+            overflow-y: auto; /* Adiciona barra de rolagem se necessário */
         }
 
         #lista {
             margin-top: 20px;
             padding: 0;
+            list-style: none;
+            max-height: 60vh; /* Limita a altura da lista */
+            overflow-y: auto; /* Adiciona barra de rolagem se necessário */
         }
 
         li {
@@ -22,7 +41,59 @@
             padding: 8px;
             background: #f0f0f0;
             border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        
+        
         }
+
+        button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            background: #ff4d4d;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #e60000;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus {
+            border-color: #66afe9;
+            outline: none;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+                height: auto; /* Ajusta a altura para dispositivos menores */
+            }
+            input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            button {
+                width: 100%;
+            }
+        }
+
+        
     </style>
     <script>
         function adicionar() {
