@@ -1,8 +1,8 @@
-# Atividade 6
+# Atividade 6🚀
 
 Um resumo das alterações feitas e um mini relatório da atividade.
 
-### Botão com função de chamada errada
+### Botão com função de chamada errada ▶
 
 O botão no  HTML está configurado para chamar uma função chamada `adicionar()`, mas a função escrita em  JS se chama `adicionarTarefa()` entao isso altera a comunicação e faz com que ele não reconheça a função “adicionar”.
 
@@ -13,7 +13,7 @@ Então como resolver? O nome da função na tag `<button>` precisa ser exatament
 
 ---
 
-### Operador de Comparação Errado na Condição `if`
+### Operador de Comparação Errado na Condição `if`⚙🎲
 
 Dentro da função, o sistema está tentando verificar se o campo de texto está vazio. No entanto, o código usa o operador de atribuição (`=`) em vez de um operador de comparação que seria (`==` ou `===`).
 
@@ -23,7 +23,7 @@ Dentro da função, o sistema está tentando verificar se o campo de texto está
 
 ---
 
-### Criação de Elemento de Lista (`li`) com Tag Inválida
+### Criação de Elemento de Lista (`li`) com Tag Inválida 📌❎
 
 O código tenta criar um novo item de lista usando `document.createElement("il")`. A tag para adicionar lista (`list item`) em HTML é `li`.
 
@@ -32,7 +32,7 @@ O código tenta criar um novo item de lista usando `document.createElement("il")
 
 ---
 
-### Limpeza do campo de texto com problemas
+### Limpeza do campo de texto com problemas 🔍🗑
 
 Ao final da função, o código tenta limpar o campo de input usando a propriedade `innerText`. Elementos `<input>` não usam `innerText`; o texto que eles exibem é controlado pela propriedade `value`.
 
