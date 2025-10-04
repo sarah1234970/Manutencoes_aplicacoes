@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini CRUD - Tasks</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            border-radius: 8px;
+        }
+
+        /* Formulário de Adição */
+        #adicionar-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #input-item {
+            flex-grow: 1;
+            /* Permite que o campo ocupe a maior parte do espaço */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        #btn-adicionar {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #btn-adicionar:hover {
+            background-color: #0056b3;
+        }
+
+        /* Lista de Tarefas */
+        #lista-tarefas {
+            list-style: none;
+            padding: 0;
+        }
+
+        #lista-tarefas li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        #lista-tarefas li:last-child {
+            border-bottom: none;
+        }
+
+        /* Botões da Lista */
+        .botoes-acao {
+            display: flex;
+            gap: 8px;
+        }
+
+        .botoes-acao button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-editar {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .btn-excluir {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Feedback e Validação */
+        .hidden {
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Listinha de Tarefas📌</h1>
+        <div id="adicionar-form">
+            <input type="text" id="tarefa-input" placeholder="Anote uma tarefa aqui...">
+            <button id="adicionar-btn">Adicionar✔</button>
+        </div>
+        <p id="mensagem-melhorias" class="hidden"></p>
+        <ul id="lista-tarefas">
+            <!-- Tarefas vão ser adicionadas aqui -->
+        </ul>
+        <button id="limpar-btn">Limpar Tudo🗑️</button>
+        <button id="editar-btn">Editar Tarefa✏️</button>
+        <button id="salvar-btn" class="hidden">Salvar Alterações💾</button>
+    </div>
+    <script>
+        let listaDeItens = []; // Array para armazenar os itens da lista
+
+        const STORAGE_KEY = 'listaTarefas'; // Chave para o localStorage
+
+        // FUNÇÕES DE PERSISTÊNCIA (localStorage e JSON)
+
+        function salvarLocalStorage() { // Salva o array atual no localStorage
+
+            const stringJSON = JSON.stringify(listaDeItens); // Converte o array para uma string JSON
+            localStorage.setItem(STORAGE_KEY, stringJSON); // Salva a string no localStorage
+        }
+
+        function carregarLocalStorage() { // Carrega o array do localStorage caso houver
+            const stringSalva = localStorage.getItem(STORAGE_KEY); // Pega a string salva no localStorage
+
+            if (stringSalva) {
+                //usa o JSON.parse() para converter a string JSON de volta para um array JavaScript
+                listaDeItens = JSON.parse(stringSalva);
+            }
+        }
+
+        // FUNÇÕES DE EXIBIÇÃO E FEEDBACK
+
+        // Exibe mensagens temporárias para o usuário (como por exemplo, uma tarefa adicionada)
+        function exibirFeedback(mensagem, tipo = 'success') {
+            const feedback = document.getElementById('mensagem-melhorias');
+            feedback.textContent = mensagem;
+            feedback.className = tipo; // Define a classe (success ou error)
+            feedback.classList.remove('hidden'); // o elemento fica visível
+
+            // Remove a mensagem após 3 segundos
+            setTimeout(() => { // Função anônima
+                feedback.classList.add('hidden'); // Esconde o elemento novamente
+            }, 3000); // segundos
+        }
+
+
+        // Lista os itens na tela
+        function listarItens() {
+            const containerLista = document.getElementById('lista-tarefas');
+            containerLista.innerHTML = ''; // Limpa a lista antes de recriar do zero
+
+            if (listaDeItens.length === 0) { // Se não houver itens, exibe uma mensagem 
+                containerLista.innerHTML = '<p style="text-align:center; color: #888;">Nenhuma tarefa foi cadastrada. Adicione uma📌!</p>';
+                return;
+            }
+
+            // Cria um elemento <li> para cada item no array
+            listaDeItens.forEach((itemTexto, index) => { // O index é usado para identificar o item
+                const li = document.createElement('li'); // cria a lista
+
+                // Texto da Tarefa
+                const spanTexto = document.createElement('span'); // cria o span para o texto
+                spanTexto.textContent = itemTexto; // define o texto
+                li.appendChild(spanTexto); // adiciona o span ao li
+
+                // Contêiner de Botões
+                const divBotoes = document.createElement('div'); // cria a div para os botões
+                divBotoes.classList.add('botoes-acao');// adiciona a classe para o estilo
+
+                // Botão Editar
+                const btnEditar = document.createElement('button');
+                btnEditar.textContent = 'Editar';
+                btnEditar.classList.add('btn-editar');
+                // Usa o index do item para saber qual editar
+                btnEditar.onclick = () => editarItem(index);
+                divBotoes.appendChild(btnEditar); // adiciona o botão à div o appendChild adiciona um elemento filho a um elemento pai
+
+                // Botão Excluir
+                const btnExcluir = document.createElement('button');
+                btnExcluir.textContent = 'Excluir';
+                btnExcluir.classList.add('btn-excluir');
+                // Usa o index do item para saber qual remover
+                btnExcluir.onclick = () => removerItem(index);
+                divBotoes.appendChild(btnExcluir);
+
+                li.appendChild(divBotoes);
+                containerLista.appendChild(li);
+            });
+        }
+
+        // FUNÇÕES DO CRUD
+
+        // Implementa Create, nosso add de itens
+        function adicionarItem() {
+            const input = document.getElementById('tarefa-input');
+            const novoItem = input.value.trim();// .trim() remove espaços em branco extras
+
+            // Validação: Impedir cadastro vazio (Funcionalidade Adicional)
+            if (novoItem === '') {
+                exibirFeedback('O campo não pode estar vazio!', 'error');
+                return;
+            }
+
+            // Validação: Impedir cadastro duplicado (Funcionalidade Adicional)
+            if (listaDeItens.includes(novoItem)) {
+                exibirFeedback('Este item já existe na lista!', 'error');
+                return;
+            }
+
+            // Adiciona o item ao array
+            listaDeItens.push(novoItem);
+
+            // Salva a alteração
+            salvarLocalStorage();
+
+            // Atualiza a lista na tela
+            listarItens();
+
+            // Limpa o input e dá feedback
+            input.value = '';
+            exibirFeedback('Item foi adicionado com garantia ✔');
+        }
+
+        // Implementa o Delete, nosso remove de itens
+        function removerItem(index) {
+            // Remove 1 elemento a partir do índice (index)
+            listaDeItens.splice(index, 1); // splice é um método de array que remove ou substitui elementos existentes e/ou adiciona novos elementos no local
+
+            salvarLocalStorage();
+
+            // Atualiza a lista na tela
+            listarItens();
+
+            exibirFeedback('Item removido com sucesso 🗑️');
+        }
+
+
+        // Implementa Update, nossa edição de itens
+        function editarItem(index) {
+            // Pega o texto atual do item no array
+            const textoAtual = listaDeItens[index];
+            const input = document.getElementById('tarefa-input');
+            const btnAdicionar = document.getElementById('adicionar-btn');
+
+            // 1. Permite que o texto volte ao campo de input
+            input.value = textoAtual;
+
+            // 2. Muda de forma temporária a função do botão "Adicionar" para "Salvar Edição"
+            btnAdicionar.textContent = 'Salvar Edição';
+            btnAdicionar.onclick = () => salvarEdicao(index);
+        }
+
+        // Função auxiliar para finalizar a edição
+        function salvarEdicao(index) {
+            const input = document.getElementById('tarefa-input');
+            const btnAdicionar = document.getElementById('adicionar-btn');
+            const novoTexto = input.value.trim();
+
+            // Validação de edição
+            if (novoTexto === '') {
+                exibirFeedback('O campo não pode ficar vazio após a edição!', 'error');
+                return;
+            }
+
+            // 1. Atualiza o item no array
+            listaDeItens[index] = novoTexto;
+
+            // 2. Salva o que foi editado
+            salvarLocalStorage();
+
+            document.getElementById('limpar-btn').classList.remove('hidden');
+            document.getElementById('editar-btn').classList.remove('hidden');
+            document.getElementById('salvar-btn').classList.add('hidden');
+
+            // 3. Volta o botão ao estado normal
+            btnAdicionar.textContent = 'Adicionar';
+            btnAdicionar.onclick = adicionarItem; // retorna a função original
+
+            // 4. Limpa e atualiza
+            input.value = '';
+            listarItens();
+            exibirFeedback('Item editado com sucesso 📝');
+        }
+
+        // FUNÇÕES AUXILIARES
+        // Limpa toda a lista (Funcionalidade Adicional)
+        function limparLista() {
+            if (confirm('Tem certeza que deseja limpar toda a lista?')) {
+                listaDeItens = []; // Reseta o array
+                salvarLocalStorage(); // Salva a alteração
+                listarItens(); // Atualiza a tela
+                exibirFeedback('Lista foi limpa 🗑️');
+            }
+        }
+
+        // INICIALIZAÇÃO DO APP
+
+        // Função que é executada quando a página termina de carregar
+        function iniciarApp() {
+            // 1. Carrega os dados persistentes, se houver
+            carregarLocalStorage();
+
+            // 2. Exibe os dados na tela
+            listarItens();
+
+            // 3. Atrela a função principal ao botão de adicionar
+            document.getElementById('adicionar-btn').onclick = adicionarItem;
+            document.getElementById('limpar-btn').onclick = limparLista;
+        }
+        iniciarApp(); // ele é chamado aqui
+    </script>
+
+</body>
+
+</html>
