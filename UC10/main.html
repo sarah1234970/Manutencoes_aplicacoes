@@ -12,6 +12,23 @@
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
+            background-color: rgba(1, 1, 1, 0.9);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.pinimg.com/1200x/6a/df/0d/6adf0dcf004d1a5f59aab611c17a1e2f.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-blend-mode: multiply;
+            background-position: center;
+            opacity: 0.2;
+            z-index: -1;
         }
 
         .container {
@@ -19,16 +36,23 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            border: 1px solid #ddd;
+
+
         }
 
         .form-group {
             margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
         }
 
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #202020;
         }
 
         input,
@@ -38,26 +62,49 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
+            background: #f9f9f9;
+        }
+
+        small {
+            color: #666;
+            font-size: 12px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
 
         button {
-            background: #007bff;
+            background: #005effda;
             color: white;
+            font-size: 16px;
             padding: 10px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             margin-right: 10px;
+            transition: background 0.3s, transform 0.2s;
+            /* transição suave */
         }
 
         button:hover {
             background: #0056b3;
+            transform: translateY(-2px);
+            /* efeito de elevação */
         }
 
         .client-list {
             margin-top: 20px;
             border-top: 1px solid #ddd;
             padding-top: 20px;
+            overflow: auto;
         }
 
         .client-item {
@@ -66,6 +113,7 @@
             margin-bottom: 10px;
             border-radius: 4px;
             background: #f9f9f9;
+            align-items: center;
         }
 
         .success {
@@ -87,6 +135,9 @@
         .buttons {
             display: flex;
             gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            align-items: center;
         }
     </style>
 </head>
@@ -138,15 +189,15 @@
             </div>
 
             <div class="buttons">
-                <button type="submit" id="salvarCliente">💾 Cadastrar Cliente</button>
+                <button type="submit" id="salvarCliente"> Cadastrar Cliente</button>
                 <button type="button" id="cancelarEdicao" style="display:none" onclick="limparFormulario()">✖️ Cancelar
                     edição</button>
-                <button type="button" onclick="limparFormulario()">🧹 Limpar</button>
+                <button type="button" onclick="limparFormulario()"> Limpar</button>
             </div>
         </form>
 
         <div class="client-list">
-            <h2>📊 Clientes Cadastrados</h2>
+            <h2>📩 Clientes Cadastrados</h2>
             <div id="clientesCadastrados"></div>
         </div>
     </div>
@@ -164,107 +215,107 @@
             return typeof cpf === 'string' && cpf.trim().length > 6; // validação para aceitar varios formatos
         }
 
-            function validarEmail(email) {
-                return email.includes('@') && email.indexOf('@') > 0 && email.indexOf(' ') < email.length - 1;
+        function validarEmail(email) {
+            return email.includes('@') && email.indexOf('@') > 0 && email.indexOf(' ') < email.length - 1;
+        }
+
+        /** Diquinha 
+        * Verifica se já existe um cliente com o mesmo email ou cpf.
+        * @param {string} email - email a verificar
+        * @param {string} cpf - cpf a verificar
+        * @param {number|null} ignoredId - id a ignorar (usar ao editar)
+        * @returns {boolean}
+        */
+
+
+        function verificarClienteExistente(email, cpf, ignoredId = null) {
+            const emailNorm = (email || '').trim().toLowerCase();
+            const cpfNorm = (cpf || '').trim();
+            return clientes.some(c =>
+                c.id !== ignoredId && (String(c.email).trim().toLowerCase() === emailNorm || String(c.cpf).trim() === cpfNorm) // c.id !== ignoredId ele ta ignorando o proprio cliente que ta editando
+            );
+        }
+
+        document.getElementById('clientForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const cpf = document.getElementById('cpf').value;
+            const telefone = document.getElementById('telefone').value;
+            const cidade = document.getElementById('cidade').value;
+            const status = document.getElementById('status').value;
+
+            if (!nome) {
+                showMessage('❌ Por favor, preencha o nome!', 'error');
+                return;
             }
 
-            /** Diquinha 
-            * Verifica se já existe um cliente com o mesmo email ou cpf.
-            * @param {string} email - email a verificar
-            * @param {string} cpf - cpf a verificar
-            * @param {number|null} ignoredId - id a ignorar (usar ao editar)
-            * @returns {boolean}
-            */
-
-
-            function verificarClienteExistente(email, cpf, ignoredId = null) {
-                const emailNorm = (email || '').trim().toLowerCase();
-                const cpfNorm = (cpf || '').trim();
-                return clientes.some(c =>
-                    c.id !== ignoredId && (String(c.email).trim().toLowerCase() === emailNorm || String(c.cpf).trim() === cpfNorm) // c.id !== ignoredId ele ta ignorando o proprio cliente que ta editando
-                );
+            if (!validarEmail(email)) {
+                showMessage('❌ E-mail inválido!', 'error');
+                return;
             }
 
-            document.getElementById('clientForm').addEventListener('submit', function (e) {
-                e.preventDefault();
+            if (!validarCPF(cpf)) {
+                showMessage('❌ CPF inválido!', 'error');
+                return;
+            }
 
-                const nome = document.getElementById('nome').value;
-                const email = document.getElementById('email').value;
-                const cpf = document.getElementById('cpf').value;
-                const telefone = document.getElementById('telefone').value;
-                const cidade = document.getElementById('cidade').value;
-                const status = document.getElementById('status').value;
+            if (verificarClienteExistente(email, cpf, editingID)) {
+                showMessage('❌ Cliente já cadastrado!', 'error');
+                return;
+            }
 
-                if (!nome) {
-                    showMessage('❌ Por favor, preencha o nome!', 'error');
-                    return;
-                }
-
-                if (!validarEmail(email)) {
-                    showMessage('❌ E-mail inválido!', 'error');
-                    return;
-                }
-
-                if (!validarCPF(cpf)) {
-                    showMessage('❌ CPF inválido!', 'error');
-                    return;
-                }
-
-                if (verificarClienteExistente(email, cpf, editingID)) {
-                    showMessage('❌ Cliente já cadastrado!', 'error');
-                    return;
-                }
-
-                if (editingID === null) { // para editar um cliente existente
-                    const cliente = {
-                        id: nextId++,
-                        nome,
-                        email,
-                        cpf,
-                        telefone: telefone || '',
-                        cidade: cidade || '',
-                        status,
-                        dataCadastro: new Date().toLocaleDateString()
-                    };
-                    clientes.push(cliente);
-                    salvarLocalStorage(); // salvar após adicionar novo cliente no array
+            if (editingID === null) { // para editar um cliente existente
+                const cliente = {
+                    id: nextId++,
+                    nome,
+                    email,
+                    cpf,
+                    telefone: telefone || '',
+                    cidade: cidade || '',
+                    status,
+                    dataCadastro: new Date().toLocaleDateString()
+                };
+                clientes.push(cliente);
+                salvarLocalStorage(); // salvar após adicionar novo cliente no array
+                atualizarListaClientes();
+                limparFormulario();
+                showMessage('✅ Cliente cadastrado com sucesso!', 'success');
+            } else {
+                // atualizar cliente existente
+                const cliente = clientes.find(c => c.id === editingID);
+                if (cliente) {
+                    cliente.nome = nome;
+                    cliente.email = email;
+                    cliente.cpf = cpf;
+                    cliente.telefone = telefone || '';
+                    cliente.cidade = cidade || '';
+                    cliente.status = status;
+                    salvarLocalStorage(); // salvar após atualizar o cliente
                     atualizarListaClientes();
                     limparFormulario();
-                    showMessage('✅ Cliente cadastrado com sucesso!', 'success');
-                } else {
-                    // atualizar cliente existente
-                    const cliente = clientes.find(c => c.id === editingID);
-                    if (cliente) {
-                        cliente.nome = nome;
-                        cliente.email = email;
-                        cliente.cpf = cpf;
-                        cliente.telefone = telefone || '';
-                        cliente.cidade = cidade || '';
-                        cliente.status = status;
-                        salvarLocalStorage(); // salvar após atualizar o cliente
-                        atualizarListaClientes();
-                        limparFormulario();
-                        showMessage('✅ Cliente atualizado com sucesso!', 'success');
-                    }
-                    editingID = null; // resetar o ID de edição após salvar
-                    atualizarEstadoEdicao();
+                    showMessage('✅ Cliente atualizado com sucesso!', 'success');
                 }
-            });
+                editingID = null; // resetar o ID de edição após salvar
+                atualizarEstadoEdicao();
+            }
+        });
 
-            // Função para atualizar a lista de clientes exibida
-            function atualizarListaClientes() {
-                const container = document.getElementById('clientesCadastrados');
-                container.innerHTML = '';
+        // Função para atualizar a lista de clientes exibida
+        function atualizarListaClientes() {
+            const container = document.getElementById('clientesCadastrados');
+            container.innerHTML = '';
 
-                if (clientes.length === 0) {
-                    container.innerHTML = '<p>Nenhum cliente cadastrado ainda.</p>';
-                    return;
-                }
+            if (clientes.length === 0) {
+                container.innerHTML = '<p>Nenhum cliente cadastrado ainda.</p>';
+                return;
+            }
 
-                clientes.forEach(cliente => {
-                    const div = document.createElement('div');
-                    div.className = 'client-item';
-                    div.innerHTML = `
+            clientes.forEach(cliente => {
+                const div = document.createElement('div');
+                div.className = 'client-item';
+                div.innerHTML = `
                         <div class="client-info">
                             <strong>${cliente.nome}</strong> (${cliente.status})<br>
                             📧 ${cliente.email} | 📞 ${cliente.telefone || 'Não informado'}<br>
@@ -273,126 +324,126 @@
                         </div>
                 `;
 
-                    const actions = document.createElement('div');
-                    actions.className = 'client-actions';
+                const actions = document.createElement('div');
+                actions.className = 'client-actions';
 
-                    const editButton = document.createElement('button');
-                    editButton.textContent = '✏️ Editar';
-                    editButton.style.background = '#ffc107';
-                    editButton.onclick = () => editarCliente(cliente.id);
-                    actions.appendChild(editButton);
+                const editButton = document.createElement('button');
+                editButton.textContent = '✏️ Editar';
+                editButton.style.background = 'green';
+                editButton.onclick = () => editarCliente(cliente.id);
+                actions.appendChild(editButton);
 
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = '🗑️ Excluir';
-                    deleteButton.style.background = '#dc3545';
-                    deleteButton.type = 'button';
-                    deleteButton.className = 'warn'; // Para avisar o usuário que é uma exclusão
-                    deleteButton.onclick = () => {
-                        if (confirm('Tem certeza que deseja excluir este usuário?')) {
-                            excluirCliente(cliente.id);
-                        }
-                    };
-                    actions.appendChild(deleteButton);
-                    div.appendChild(actions);
-                    container.appendChild(div);
-                });
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = '🗑️ Excluir';
+                deleteButton.style.background = '#dc3545';
+                deleteButton.type = 'button';
+                deleteButton.className = 'warn'; // Para avisar o usuário que é uma exclusão
+                deleteButton.onclick = () => {
+                    if (confirm('Tem certeza que deseja excluir este usuário?')) {
+                        excluirCliente(cliente.id);
+                    }
+                };
+                actions.appendChild(deleteButton);
+                div.appendChild(actions);
+                container.appendChild(div);
+            });
+        }
+        function editarCliente(id) {
+            const cliente = clientes.find(c => c.id === id);
+            if (!cliente) return;
+
+            editingID = id; // definir o ID do cliente em edição
+            document.getElementById('nome').value = cliente.nome;
+            document.getElementById('email').value = cliente.email;
+            document.getElementById('cpf').value = cliente.cpf;
+            document.getElementById('telefone').value = cliente.telefone || '';
+            document.getElementById('cidade').value = cliente.cidade || '';
+            document.getElementById('status').value = cliente.status;
+            showMessage('Você está editando um cliente!✏️', 'success');
+            atualizarEstadoEdicao();
+        }
+        document.getElementById('cancelarEdicao').addEventListener('click', function () { // botão para cancelar edição
+            limparFormulario();
+            editingID = null;
+            atualizarEstadoEdicao();
+        });
+
+        function atualizarEstadoEdicao() {
+            const cancelButton = document.getElementById('cancelarEdicao');
+            const saveButton = document.getElementById('salvarCliente');
+            if (editingID !== null) {
+                cancelButton.style.display = 'inline-block';
+                saveButton.textContent = '💾 Salvar Alterações';
+            } else {
+                cancelButton.style.display = 'none';
+                saveButton.textContent = '💾 Cadastrar Cliente';
             }
-            function editarCliente(id) {
-                const cliente = clientes.find(c => c.id === id);
-                if (!cliente) return;
+        }
 
-                editingID = id; // definir o ID do cliente em edição
-                document.getElementById('nome').value = cliente.nome;
-                document.getElementById('email').value = cliente.email;
-                document.getElementById('cpf').value = cliente.cpf;
-                document.getElementById('telefone').value = cliente.telefone || '';
-                document.getElementById('cidade').value = cliente.cidade || '';
-                document.getElementById('status').value = cliente.status;
-                showMessage('Você está editando um cliente!✏️', 'success');
-                atualizarEstadoEdicao();
-            }
-            document.getElementById('cancelarEdicao').addEventListener('click', function () { // botão para cancelar edição
+        function excluirCliente(id) {
+            clientes = clientes.filter(c => c.id !== id);
+            salvarLocalStorage(); // salvar após excluir o cliente
+            showMessage('🗑️ Cliente excluído!', 'success');
+            atualizarListaClientes();
+
+            if (editingID === id) {
                 limparFormulario();
                 editingID = null;
                 atualizarEstadoEdicao();
-            });
+            }
+        }
 
-            function atualizarEstadoEdicao() {
-                const cancelButton = document.getElementById('cancelarEdicao');
-                const saveButton = document.getElementById('salvarCliente');
-                if (editingID !== null) {
-                    cancelButton.style.display = 'inline-block';
-                    saveButton.textContent = '💾 Salvar Alterações';
+        function limparFormulario() {
+            document.getElementById('clientForm').reset();
+            document.getElementById('message').innerHTML = '';
+            editingID = null; // resetar o ID de edição ao limpar o formulário
+            showMessage('🧹 Formulário limpo!', 'success');
+            atualizarEstadoEdicao();
+        }
+
+        // mensagens temporarias
+        let msgTimeout; // variável para controlar o timeout da mensagem
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="${type}">${text}</div>`;
+            clearTimeout(msgTimeout);
+            msgTimeout = setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Funções para salvar e carregar do localStorage
+        function salvarLocalStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes));
+            } catch (e) {
+                console.error('Erro ao salvar no localStorage:', e);
+            }
+        }
+        function carregarLocalStorage() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    clientes = JSON.parse(data);
+                    const maxId = clientes.reduce((m, c) => (c.id > m ? c.id : m), 0);
+                    nextId = maxId + 1;
                 } else {
-                    cancelButton.style.display = 'none';
-                    saveButton.textContent = '💾 Cadastrar Cliente';
-                }
-            }
-
-            function excluirCliente(id) {
-                clientes = clientes.filter(c => c.id !== id);
-                salvarLocalStorage(); // salvar após excluir o cliente
-                showMessage('🗑️ Cliente excluído!', 'success');
-                atualizarListaClientes();
-
-                if (editingID === id) {
-                    limparFormulario();
-                    editingID = null;
-                    atualizarEstadoEdicao();
-                }
-            }
-
-            function limparFormulario() {
-                document.getElementById('clientForm').reset();
-                document.getElementById('message').innerHTML = '';
-                editingID = null; // resetar o ID de edição ao limpar o formulário
-                showMessage('🧹 Formulário limpo!', 'success');
-                atualizarEstadoEdicao();
-            }
-
-            // mensagens temporarias
-            let msgTimeout; // variável para controlar o timeout da mensagem
-            function showMessage(text, type) {
-                const messageDiv = document.getElementById('message');
-                messageDiv.innerHTML = `<div class="${type}">${text}</div>`;
-                clearTimeout(msgTimeout);
-                msgTimeout = setTimeout(() => {
-                    messageDiv.innerHTML = '';
-                }, 5000);
-            }
-
-            // Funções para salvar e carregar do localStorage
-            function salvarLocalStorage() {
-                try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes));
-                } catch (e) {
-                    console.error('Erro ao salvar no localStorage:', e);
-                }
-            }
-            function carregarLocalStorage() {
-                try {
-                    const data = localStorage.getItem(STORAGE_KEY);
-                    if (data) {
-                        clientes = JSON.parse(data);
-                        const maxId = clientes.reduce((m, c) => (c.id > m ? c.id : m), 0);
-                        nextId = maxId + 1;
-                    } else {
-                        clientes = [];
-                    }
-                } catch (e) {
-                    console.error('Erro ao carregar do localStorage:', e);
                     clientes = [];
                 }
+            } catch (e) {
+                console.error('Erro ao carregar do localStorage:', e);
+                clientes = [];
             }
-            function escapeHtml(unsafe) {
-                if (unsafe === null || unsafe === undefined) return '';
-                return unsafe
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#039;");
-            }
+        }
+        function escapeHtml(unsafe) {
+            if (unsafe === null || unsafe === undefined) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
     </script>
 </body>
