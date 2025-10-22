@@ -19,7 +19,7 @@ O repositório contém subpastas que organizam os diferentes tipos de trabalho. 
 
 * `Documentações/` – guias, especificações, mapas de requisitos
 * `UC9_Atividades/`, `UC10/` – unidades de caso, atividades específicas para estudo
-* `ecommerce/` – exemplo ou módulo de aplicação de comércio eletrônico
+* `ecommerce/` – exemplo de aplicação com Django
 * `explorar/` – protótipos ou experimentos diversos
 * Arquivo de banco de dados (`db.sqlite3`), `manage.py`, entre outros, indicam que há uma aplicação construída em Django ou similar
 
@@ -75,7 +75,6 @@ Siga estes passos para testar a aplicação localmente em seu ambiente de desenv
 
 ## 🔍 Uso & Exemplos
 
-* Explore a pasta `ecommerce/` para ver um exemplo de aplicação de vendas ou catálogo.
 * Verifique em `UC9_Atividades/` e `UC10/` os casos de uso que documentam requisitos, fluxos e testes.
 * Use os arquivos de documentação na pasta `Documentações/` para entender decisões de projeto, modelos de dados e arquitetura.
 
