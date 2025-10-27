@@ -1,4 +1,4 @@
-### **Pesquisa de Teste de Integração e Dependências (Auto-Estudo)**
+# **Pesquisa de Teste de Integração e Dependências (Auto-Estudo)**
 
 ## 1. Etapa: Teste de integração de pesquisa 🔍
 
